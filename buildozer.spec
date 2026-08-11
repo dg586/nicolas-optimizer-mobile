@@ -1,26 +1,55 @@
-[app]
+name: Build APK
 
-title = Nicolas Optimizer Mobile
-package.name = nicolasoptimizer
-package.domain = org.nicolas
-version = 1.0.0
+on:
+workflow_dispatch:
 
-source.dir = .
-source.include_exts = py,png,jpg,jpeg,kv,atlas,ico
+jobs:
+build:
+name: Build Android APK
+runs-on: ubuntu-22.04
 
-requirements = python3,kivy==2.3.1,pyjnius
+```
+steps:
+  - name: Baixar projeto
+    uses: actions/checkout@v5
 
-orientation = portrait
-fullscreen = 0
+  - name: Configurar Python
+    uses: actions/setup-python@v6
+    with:
+      python-version: "3.11"
 
-android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE,BLUETOOTH,BLUETOOTH_ADMIN
+  - name: Instalar dependências do sistema
+    run: |
+      sudo apt-get update
+      sudo apt-get install -y \
+        git \
+        zip \
+        unzip \
+        openjdk-17-jdk \
+        autoconf \
+        automake \
+        libtool \
+        pkg-config \
+        zlib1g-dev \
+        libncurses5-dev \
+        libncursesw5-dev \
+        cmake \
+        libffi-dev \
+        libssl-dev
 
-android.api = 35
-android.minapi = 23
+  - name: Instalar Buildozer
+    run: |
+      python -m pip install --upgrade pip
+      pip install buildozer
+      pip install "cython==0.29.36"
 
-android.archs = arm64-v8a,armeabi-v7a
+  - name: Gerar APK
+    run: |
+      buildozer android debug
 
-[buildozer]
-
-log_level = 2
-warn_on_root = 1
+  - name: Disponibilizar APK
+    uses: actions/upload-artifact@v4
+    with:
+      name: nicolas-optimizer-mobile
+      path: bin/*.apk
+```
