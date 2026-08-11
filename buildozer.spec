@@ -3,6 +3,7 @@
 title = Nicolas Optimizer Mobile
 package.name = nicolasoptimizer
 package.domain = org.nicolas
+version = 1.0.0
 
 source.dir = .
 source.include_exts = py,png,jpg,jpeg,kv,atlas,ico
@@ -10,7 +11,6 @@ source.include_exts = py,png,jpg,jpeg,kv,atlas,ico
 requirements = python3,kivy==2.3.1,pyjnius
 
 orientation = portrait
-
 fullscreen = 0
 
 android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE,BLUETOOTH,BLUETOOTH_ADMIN
